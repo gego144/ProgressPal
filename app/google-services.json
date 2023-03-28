@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "257310881759",
+    "project_id": "csci4176-groupproject",
+    "storage_bucket": "csci4176-groupproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257310881759:android:2d16a0362fbc0a576a766a",
+        "android_client_info": {
+          "package_name": "com.example.progresspal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257310881759-id5k2kbm9ukvpd4evd5kqh701m621ie7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYJ3iZnClMOQy2MJEa-EXZrL6by_DaVQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257310881759-id5k2kbm9ukvpd4evd5kqh701m621ie7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,11 +8,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.databinding.ActivityMainBinding
+import com.example.progresspal.persistence.TaskPersistence
 import java.sql.Date
 import java.sql.Time
+import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView;
     private lateinit var adapter: TaskAdapter;
     private lateinit var list: ArrayList<Task>
+    private lateinit var mModel: TaskPersistence
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -31,14 +38,16 @@ class MainActivity : AppCompatActivity() {
 
         list = ArrayList<Task>()
 
-        val date = Date.valueOf("2023-03-27")
-        val time = Time.valueOf("02:31:30")
+        //list = TaskPersistence.get()
 
-        val first = Task("1", "Finish the assignment \uD83D\uDE80", "High", date,time, false );
-        val second = Task("2", "schedule a zoom call with design team", "High", date,time, true );
-        val third = Task("3", "Finish up the team meeting", "High", date,time, false );
-        val fourth = Task("4", "Program the code", "High", date,time, false );
-        val fifth = Task("5", "reply to emails", "High", date,time, false );
+        val date = Date.valueOf("2023-03-27")
+        val time = Time.valueOf("02:31:00")
+
+        val first = Task(1,"Finish the assignment \uD83D\uDE80", "High", date,time, "Daily",false );
+        val second = Task(2,"schedule a zoom call with design team", "High", date,time, "Monthly",true );
+        val third = Task(3,"Finish up the team meeting", "High", date,time, "Yearly",false );
+        val fourth = Task(4,"Program the code", "High", date,time, "None",false );
+        val fifth = Task(5,"reply to emails", "High", date,time, "None", false );
 
         list.add(first)
         list.add(second)
@@ -62,8 +71,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, addTask::class.java)
             startActivity(intent)
         }
-
-
     }
 
 }
