@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addTask">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/menuBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="22dp"
+            android:maxWidth="18dp"
+            android:maxHeight="16dp"
+            android:minWidth="18dp"
+            android:minHeight="16dp"
+            android:src="@drawable/menu" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="52dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Add task"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
+
+            android:text="Add task description"
+            android:textColor="#788190"
+            android:textSize="14dp" />
+        <!--android:fontFamily="@font/lato"-->
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:text="Title"
+                android:textColor="@android:color/black" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#CCCCCC"
+                app:cardCornerRadius="4dp">
+
+                <ImageView
+                    android:id="@+id/taskImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="0dp"
+                    app:srcCompat="?attr/actionModePasteDrawable" />
+
+                <EditText
+                    android:id="@+id/taskName"
+                    android:layout_width="288dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="35dp"
+                    android:hint="Task name"
+                    android:textColor="@android:color/black"
+                    android:textSize="17dp" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/dueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:text="Due"
+                android:textColor="@android:color/black" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#CCCCCC"
+                app:cardCornerRadius="4dp">
+
+                <Button
+                    android:id="@+id/datePickerOpen"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="Date"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/black"
+                    app:backgroundTint="@android:color/darker_gray" />
+
+                <ImageView
+                    android:id="@+id/dateImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="0dp"
+                    app:srcCompat="?attr/actionModePasteDrawable" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/priorityText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:text="Priority"
+                android:textColor="@android:color/black" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#CCCCCC"
+                app:cardCornerRadius="4dp">
+
+                <ImageView
+                    android:id="@+id/temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="0dp"
+                    app:srcCompat="?attr/actionModePasteDrawable" />
+
+                <Spinner
+                    android:id="@+id/prioritySpinner"
+                    android:layout_width="293dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="9dp" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/reminderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:text="Reminder"
+                android:textColor="@android:color/black" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#CCCCCC"
+                app:cardCornerRadius="4dp">
+
+                <Button
+                    android:id="@+id/timePickerOpen"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="12:00"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/black"
+                    app:backgroundTint="@android:color/darker_gray" />
+
+                <ImageView
+                    android:id="@+id/timeImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="0dp"
+                    app:srcCompat="?attr/actionModePasteDrawable" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/repeatText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:text="Repeat"
+                android:textColor="@android:color/black" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#CCCCCC"
+                app:cardCornerRadius="4dp">
+
+                <ImageView
+                    android:id="@+id/repeatImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="0dp"
+                    app:srcCompat="?attr/actionModePasteDrawable" />
+
+                <Spinner
+                    android:id="@+id/repeatSpinner"
+                    android:layout_width="293dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="9dp" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/addTaskDeleteBtn"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="315dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="30dp"
+                android:text="Delete"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="14dp"
+                app:backgroundTint="@android:color/transparent" />
+
+            <Button
+                android:id="@+id/addTaskSaveChangesBtn"
+                android:layout_width="315dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/round_button"
+                android:text="Save changes"
+                android:textSize="14dp"
+                />
+
+        </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

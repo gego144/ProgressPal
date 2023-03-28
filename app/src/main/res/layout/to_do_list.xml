@@ -17,8 +17,8 @@
         android:layout_height="24dp"
         android:layout_marginLeft="14dp"
         android:layout_weight="1"
-        android:fontFamily="@font/poppins"
         android:text="Test Task"
         android:textSize="16dp"
         android:textColor="#383F50"/>
+    <!--android:fontFamily="@font/poppins"-->
 </LinearLayout>
