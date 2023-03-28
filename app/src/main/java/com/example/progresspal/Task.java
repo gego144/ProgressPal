@@ -4,27 +4,29 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class Task {
-    String id;
+    int id;
     String title;
     String priority;
     Date dueDate;
     Time reminder;
+    String repeat;
     Boolean isCompleted;
 
-    public Task(String id, String title, String priority, Date dueDate, Time reminder, Boolean isCompleted) {
+    public Task(int id, String title, String priority, Date dueDate, Time reminder, String repeat, Boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.priority = priority;
         this.dueDate = dueDate;
         this.reminder = reminder;
+        this.repeat = repeat;
         this.isCompleted = isCompleted;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -58,6 +60,14 @@ public class Task {
 
     public void setReminder(Time reminder) {
         this.reminder = reminder;
+    }
+
+    public void setRepeat(String repeat) {
+        this.repeat = repeat;
+    }
+
+    public String getRepeat(){
+        return repeat;
     }
 
     public Boolean getCompleted() {

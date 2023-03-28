@@ -49,6 +49,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return list.size();
     }
 
+    public void setNotes(ArrayList<Task> tasks){
+        this.list = tasks;
+        notifyDataSetChanged();
+    }
+
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
         TaskAdapter adapter;
@@ -77,5 +82,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             this.adapter = adapter;
             return this;
         }
+
+
     }
 }
