@@ -3,7 +3,9 @@ package com.example.progresspal.persistence
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Task
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -19,13 +21,28 @@ object TaskPersistence : ViewModel(){
 
     val docRef = database.collection("users").document("testAndroidID").collection("currentDay").document("taskObjects")
 
-    fun get(): ArrayList<Task> {
+    fun get(view: RecyclerView): ArrayList<Task> {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    var databaseGrab = document.data?.get("tasks")
-                    allTasks = databaseGrab as ArrayList<Task>
-                    _myArrayList.value = allTasks
+                    var databaseGrab = document.data?.get("tasks") as ArrayList<HashMap<Any, Any>>
+
+                    allTasks.clear()
+
+                    for (i in 0 until databaseGrab.size) {
+                        var tempTask = Task(
+                            databaseGrab.size,
+                            databaseGrab.get(i).get("title") as String?,
+                            databaseGrab.get(i).get("priority") as String?,
+                            databaseGrab.get(i).get("dueDate") as Timestamp?,
+                            databaseGrab.get(i).get("reminder") as Timestamp?,
+                            databaseGrab.get(i).get("repeat") as String?,
+                            databaseGrab.get(i).get("completed") as Boolean?,
+                        )
+                        allTasks.add(tempTask)
+                    }
+
+                    view.adapter?.notifyDataSetChanged()
                     println("Completed get")
                 } else {
                     println("Document doesn't exist")
@@ -39,16 +56,16 @@ object TaskPersistence : ViewModel(){
 
     fun create(task: Task){
 
-        val task = hashMapOf(
-            "id" to allTasks.size,
-            "Title" to task.title,
-            "priority" to task.priority,
-            "dueDate" to task.dueDate,
-            "reminder" to task.reminder,
-            "repeat" to task.repeat,
-            "isCompleted" to task.completed,
+        val task = Task(
+            allTasks.size,
+            task.title,
+            task.priority,
+            task.dueDate,
+            task.reminder,
+            task.repeat,
+            task.completed,
         )
-
+        allTasks.add(task);
         docRef
             .update("tasks", FieldValue.arrayUnion(task))
             .addOnSuccessListener {

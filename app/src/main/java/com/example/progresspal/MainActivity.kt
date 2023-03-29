@@ -36,33 +36,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        list = ArrayList<Task>()
-
-        //list = TaskPersistence.get()
-
-        val date = Date.valueOf("2023-03-27")
-        val time = Time.valueOf("02:31:00")
-
-        val first = Task(1,"Finish the assignment \uD83D\uDE80", "High", date,time, "Daily",false );
-        val second = Task(2,"schedule a zoom call with design team", "High", date,time, "Monthly",true );
-        val third = Task(3,"Finish up the team meeting", "High", date,time, "Yearly",false );
-        val fourth = Task(4,"Program the code", "High", date,time, "None",false );
-        val fifth = Task(5,"reply to emails", "High", date,time, "None", false );
-
-        list.add(first)
-        list.add(second)
-        list.add(third)
-        list.add(fourth)
-        list.add(fifth)
-        list.add(second)
-        list.add(first)
-        list.add(third)
-        list.add(fourth)
-        list.add(second)
-        list.add(third)
-        list.add(fourth)
-
         binding.progressBar.secondaryProgress = 25
+        list = TaskPersistence.get(recyclerView)
 
         adapter =TaskAdapter(this, list);
         recyclerView.adapter = adapter
