@@ -1,5 +1,7 @@
 package com.example.progresspal;
 
+import com.google.firebase.Timestamp;
+
 import java.sql.Date;
 import java.sql.Time;
 
@@ -7,12 +9,12 @@ public class Task {
     int id;
     String title;
     String priority;
-    Date dueDate;
-    Time reminder;
+    Timestamp dueDate;
+    Timestamp reminder;
     String repeat;
     Boolean isCompleted;
 
-    public Task(int id, String title, String priority, Date dueDate, Time reminder, String repeat, Boolean isCompleted) {
+    public Task(int id, String title, String priority, Timestamp dueDate, Timestamp reminder, String repeat, Boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.priority = priority;
@@ -46,19 +48,19 @@ public class Task {
         this.priority = priority;
     }
 
-    public Date getDueDate() {
+    public Timestamp getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(Timestamp dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Time getReminder() {
+    public Timestamp getReminder() {
         return reminder;
     }
 
-    public void setReminder(Time reminder) {
+    public void setReminder(Timestamp reminder) {
         this.reminder = reminder;
     }
 

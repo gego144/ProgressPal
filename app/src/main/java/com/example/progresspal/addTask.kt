@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import com.example.progresspal.persistence.TaskPersistence
+import com.google.firebase.Timestamp
 import java.sql.Time
 import java.sql.Date
 import java.util.*
@@ -91,19 +92,19 @@ class addTask : AppCompatActivity() {
         val taskName = findViewById<TextView>(R.id.taskName).text;
 
         findViewById<Button>(R.id.addTaskSaveChangesBtn).setOnClickListener{
-            val date : Date
-            val time : Time
+            var date : Timestamp
+            var time : Timestamp
             if(pickedDate == ""){
-                date = Date(System.currentTimeMillis())
+                date = Timestamp(Date(System.currentTimeMillis()))
             }
             else{
-                date = Date.valueOf(pickedDate)
+                date = Timestamp(Date.valueOf(pickedDate))
             }
             if(pickedTime == ""){
-                time = Time.valueOf("12:00:00")
+                time = Timestamp(Time.valueOf("12:00:00"))
             }
             else{
-                time = Time.valueOf(pickedTime+":00")
+                time = Timestamp(Time.valueOf(pickedTime+":00"))
             }
 
             val first = Task(0,"$taskName \uD83D\uDE80", priority, date,time, repeatWhen,false );
