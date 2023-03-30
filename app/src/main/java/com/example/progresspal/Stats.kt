@@ -1,26 +1,19 @@
 package com.example.progresspal
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.progresspal.databinding.ActivityMainBinding
-import com.example.progresspal.persistence.TaskPersistence
+import com.example.progresspal.databinding.ActivityArchivedBinding
+import com.example.progresspal.databinding.ActivityStatsBinding
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var recyclerView: RecyclerView;
-    private lateinit var adapter: TaskAdapter;
-    private lateinit var list: ArrayList<Task>
+    private lateinit var binding: ActivityStatsBinding
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
@@ -28,18 +21,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityStatsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        recyclerView = binding.toDoList
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        binding.progressBar.secondaryProgress = 25
-        list = TaskPersistence.get(recyclerView)
-
-        adapter = TaskAdapter(this, list);
-        recyclerView.adapter = adapter
 
         drawerLayout = binding.drawerLayout
         navigationView = binding.navView
@@ -55,13 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navigationView.setNavigationItemSelectedListener(this)
-        navigationView.setCheckedItem(R.id.home)
-
-        findViewById<Button>(R.id.addTaskBtn).setOnClickListener {
-            val intent = Intent(this, addTask::class.java)
-            startActivity(intent)
-        }
-
+        navigationView.setCheckedItem(R.id.stats)
     }
 
     override fun onBackPressed() {
@@ -74,18 +51,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.home -> {}
+            R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
             R.id.archived -> {
                 val intent = Intent(this, Archived::class.java)
                 startActivity(intent)
             }
-            R.id.stats -> {
-                val intent = Intent(this, Stats::class.java)
-                startActivity(intent)
-            }
+            R.id.stats -> {}
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 }

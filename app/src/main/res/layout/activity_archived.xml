@@ -29,7 +29,7 @@
             android:layout_width="18dp"
             android:layout_height="16dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="22dp"/>
+            android:layout_marginTop="22dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="52dp"
             android:fontFamily="@font/inter_bold"
-            android:text="Daily to do list"
+            android:text="Archived List"
             android:textColor="#000000"
             android:textSize="20dp" />
 
@@ -46,36 +46,40 @@
             android:layout_height="18dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="6dp"
-
-            android:text="Check your progress"
+            android:text="View Archived List"
             android:textColor="#788190"
             android:textSize="14dp" />
-        <!--android:fontFamily="@font/lato"-->
 
-        <View
-            android:layout_width="309dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
-            android:background="#E5E5E5" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="51dp"
+            android:paddingRight="43dp"
+            android:paddingLeft="19dp"
+            android:orientation="horizontal"
+            android:background="#F5F9FF"
+            android:gravity="center">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="290dp"
-            android:layout_height="8dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="29dp"
-            android:layout_marginBottom="25dp"
-            android:max="100"
-            android:secondaryProgress="0"
-            android:secondaryProgressTint="#00286B" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:text="Date"
+                android:textAlignment="textStart"
+                android:textColor="#788190" />
 
-        <View
-            android:layout_width="309dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="40dp"
-            android:background="#E5E5E5" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:text="Progress"
+                android:textAlignment="textEnd"
+                android:textColor="#788190" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,7 +88,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/toDoList"
+                android:id="@+id/archivedList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginLeft="25dp"
@@ -93,15 +97,6 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/addTaskBtn"
-                android:layout_width="315dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/round_button"
-                android:fontFamily="@font/lato"
-                android:text="+ Add"
-                android:textSize="14dp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -31,7 +31,7 @@ object TaskPersistence : ViewModel(){
 
                     for (i in 0 until databaseGrab.size) {
                         var tempTask = Task(
-                            databaseGrab.size,
+                            i,
                             databaseGrab.get(i).get("title") as String?,
                             databaseGrab.get(i).get("priority") as String?,
                             databaseGrab.get(i).get("dueDate") as Timestamp?,
