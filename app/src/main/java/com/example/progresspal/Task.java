@@ -1,11 +1,16 @@
 package com.example.progresspal;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 
 import java.sql.Date;
 import java.sql.Time;
 
-public class Task {
+public class Task implements Parcelable {
     int id;
     String title;
     String priority;
@@ -23,6 +28,29 @@ public class Task {
         this.repeat = repeat;
         this.isCompleted = isCompleted;
     }
+
+    protected Task(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        priority = in.readString();
+        dueDate = in.readParcelable(Timestamp.class.getClassLoader());
+        reminder = in.readParcelable(Timestamp.class.getClassLoader());
+        repeat = in.readString();
+        byte tmpIsCompleted = in.readByte();
+        isCompleted = tmpIsCompleted == 0 ? null : tmpIsCompleted == 1;
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -78,5 +106,21 @@ public class Task {
 
     public void setCompleted(Boolean completed) {
         isCompleted = completed;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(priority);
+        parcel.writeParcelable(dueDate, i);
+        parcel.writeParcelable(reminder, i);
+        parcel.writeString(repeat);
+        parcel.writeByte((byte) (isCompleted == null ? 0 : isCompleted ? 1 : 2));
     }
 }
