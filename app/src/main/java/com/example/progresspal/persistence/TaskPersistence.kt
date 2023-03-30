@@ -92,4 +92,15 @@ object TaskPersistence : ViewModel(){
             .addOnFailureListener { println("failed") }
     }
 
+    fun delete(position: Int){
+
+        allTasks.removeAt(position)
+        docRef
+            .update("tasks", allTasks)
+            .addOnSuccessListener {
+                println("Completed edit")
+            }
+            .addOnFailureListener { println("failed") }
+    }
+
 }

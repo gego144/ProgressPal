@@ -1,8 +1,11 @@
 package com.example.progresspal
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.icu.text.Transliterator.Position
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.MenuItem
@@ -161,17 +164,36 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
         }
 
-
         val intent = Intent(this, MainActivity::class.java)
 
+
+        fun deleteTaskAlert(position: Int){
+
+            val builder = AlertDialog.Builder(this)
+
+            builder.setPositiveButton(android.R.string.yes) { _, _ ->
+                TaskPersistence.delete(position)
+                startActivity(intent)
+            }
+
+            builder.setNegativeButton(android.R.string.no) { _, _ ->
+                println("closed")
+            }
+
+            with(builder)
+            {
+                setTitle("Delete task")
+                setMessage("Are you sure you want to delete?")
+                show()
+            }
+        }
+
         binding.editTaskDeleteBtn.setOnClickListener {
-            //startActivity(intent)
+            deleteTaskAlert(position)
         }
 
 
         binding.editTaskSaveChangesBtn.setOnClickListener {
-            println(priority)
-            println(repeatWhen)
             var date: Timestamp
             var time: Timestamp
             if (pickedDate == "$day-$month-$year") {
