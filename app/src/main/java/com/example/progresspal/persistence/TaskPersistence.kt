@@ -55,7 +55,6 @@ object TaskPersistence : ViewModel(){
     }
 
     fun create(task: Task){
-
         val task = Task(
             allTasks.size,
             task.title,
@@ -72,7 +71,25 @@ object TaskPersistence : ViewModel(){
                 println("Completed add")
             }
             .addOnFailureListener { println("failed") }
+    }
 
+    fun edit(task: Task, position: Int, originalTask: Task){
+        val task = Task(
+            allTasks.size,
+            task.title,
+            task.priority,
+            task.dueDate,
+            task.reminder,
+            task.repeat,
+            task.completed,
+        )
+        allTasks.set(position, task)
+        docRef
+            .update("tasks", allTasks)
+            .addOnSuccessListener {
+                println("Completed edit")
+            }
+            .addOnFailureListener { println("failed") }
     }
 
 }
