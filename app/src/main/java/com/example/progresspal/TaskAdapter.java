@@ -1,12 +1,14 @@
 package com.example.progresspal;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +18,8 @@ import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    Context context;
-    ArrayList<Task> list;
+    static Context context;
+    static ArrayList<Task> list;
 
     public TaskAdapter(Context context, ArrayList<Task> list) {
         this.context = context;
@@ -69,6 +71,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     } else {
                         adapter.list.get(getAdapterPosition()).setCompleted(false);
                         adapter.notifyItemChanged(getAdapterPosition());
+                    }
+                }
+            });
+
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Task task = list.get(getAdapterPosition());
+                    System.out.println(context.getClass().getName());
+                    if(context.getClass().getName().equals("com.example.progresspal.MainActivity")){
+                        Intent intent = new Intent(context, editTask.class);
+                        intent.putExtra("task", task);
+                        intent.putExtra("pos", getAdapterPosition());
+                        context.startActivity(intent);
                     }
                 }
             });

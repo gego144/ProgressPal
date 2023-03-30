@@ -56,7 +56,8 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 { datePicker, year, month, day -> //Showing the picked value in the textView
                     pickedDate = "$day-$month-$year"
                     datePickerOpen.text = pickedDate
-                    pickedDate = "$year-$month-$day"
+                    var tempMonth = month + 1;
+                    pickedDate = "$year-$tempMonth-$day"
                 }, 2023, 0, 20
             )
             datePickerDialog.datePicker.minDate = System.currentTimeMillis()
@@ -112,11 +113,9 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         repeatSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 repeatWhen = repeat[p2]
-                println(repeat[p2])
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                print("ok")
             }
         }
         val intent = Intent(this, MainActivity::class.java)

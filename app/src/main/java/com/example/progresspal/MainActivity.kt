@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setCheckedItem(R.id.home)
 
         findViewById<Button>(R.id.addTaskBtn).setOnClickListener {
+
             val intent = Intent(this, addTask::class.java)
             startActivity(intent)
         }
