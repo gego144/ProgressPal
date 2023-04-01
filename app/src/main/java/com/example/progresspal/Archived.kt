@@ -15,7 +15,6 @@ import com.example.progresspal.Adapter.TaskAdapter
 import com.example.progresspal.Model.Archived
 import com.example.progresspal.databinding.ActivityArchivedBinding
 import com.example.progresspal.databinding.ActivityMainBinding
-import com.example.progresspal.persistence.ArchivePersistence
 import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
@@ -42,7 +41,16 @@ class Archived : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        list = ArchivePersistence.get(recyclerView)
+//        list = TaskPersistence.get(recyclerView)
+        list = ArrayList<Archived>()
+        val arch1 = Archived("22 March, 2023", "75%")
+        val arch2 = Archived("21 March, 2023", "95%")
+        val arch3 = Archived("20 March, 2023", "80%")
+        val arch4 = Archived("19 March, 2023", "55%")
+        list.add(arch1)
+        list.add(arch2)
+        list.add(arch3)
+        list.add(arch4)
 
         adapter = ArchivedAdapter(this, list);
         recyclerView.adapter = adapter
