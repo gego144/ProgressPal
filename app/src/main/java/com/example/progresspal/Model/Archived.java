@@ -1,30 +1,42 @@
 package com.example.progresspal.Model;
 
-
 import com.google.firebase.Timestamp;
 
-public class Archived {
-    String date;
-    String progress;
+import java.util.ArrayList;
 
-    public Archived(String date, String progress) {
+public class Archived {
+    Timestamp date;
+    int progress;
+    ArrayList<ArchivedTask> tasks;
+
+    public Archived(Timestamp date, int progress, ArrayList<ArchivedTask> list) {
         this.date = date;
         this.progress = progress;
+        this.tasks = list;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
-    public String getProgress() {
+    public int getProgress() {
         return progress;
     }
 
-    public void setProgress(String progress) {
+    public void setProgress(int progress) {
         this.progress = progress;
     }
+
+    public ArrayList<ArchivedTask> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(ArrayList<ArchivedTask> tasks) {
+        this.tasks = tasks;
+    }
+
 }
