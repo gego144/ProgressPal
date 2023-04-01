@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.progresspal.Model.Archived;
+import com.example.progresspal.Model.Task;
 import com.example.progresspal.R;
-import java.sql.Date;
-import java.text.Format;
-import java.text.SimpleDateFormat;
+import com.example.progresspal.editTask;
+
 import java.util.ArrayList;
 
 public class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ArchivedViewHolder> {
@@ -39,13 +40,8 @@ public class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.Archiv
     @Override
     public void onBindViewHolder(@NonNull ArchivedViewHolder holder, int position) {
         Archived archived = list.get(position);
-        Date date = new Date(archived.getDate().getSeconds() * 1000);
-        Format dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-        String dateString = dateFormat.format(date);
-        holder.date.setText(dateString);
-
-        String progressPercent = Integer.toString(archived.getProgress())+"%";
-        holder.progress.setText(progressPercent);
+        holder.date.setText(archived.getDate());
+        holder.progress.setText(archived.getProgress());
     }
 
     @Override

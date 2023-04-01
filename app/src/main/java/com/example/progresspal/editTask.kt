@@ -214,7 +214,7 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                     repeatWhen,
                     false
                 );
-            TaskPersistence.edit(first, position, false)
+            TaskPersistence.edit(first, position, originalTask)
             startActivity(intent)
         }
 
