@@ -54,7 +54,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return list.size();
     }
 
-
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
         TaskAdapter adapter;
