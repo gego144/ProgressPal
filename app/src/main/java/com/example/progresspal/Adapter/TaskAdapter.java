@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.progresspal.Model.Task;
 import com.example.progresspal.R;
 import com.example.progresspal.editTask;
+import com.example.progresspal.persistence.TaskPersistence;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             isCompleted.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Task task = list.get(getAdapterPosition());
+                    TaskPersistence.edit(task, getAdapterPosition(), true);
                     if(isCompleted.isChecked()) {
                         adapter.list.get(getAdapterPosition()).setCompleted(true);
                         adapter.notifyItemChanged(getAdapterPosition());
