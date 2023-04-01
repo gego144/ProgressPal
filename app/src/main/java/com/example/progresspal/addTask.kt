@@ -9,16 +9,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.progresspal.Model.Task
 import com.example.progresspal.databinding.ActivityAddTaskBinding
 import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import java.sql.Time
 import java.sql.Date
-import java.util.*
 
 class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -120,10 +119,6 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         }
         val intent = Intent(this, MainActivity::class.java)
 
-        binding.addTaskDeleteBtn.setOnClickListener {
-            startActivity(intent)
-        }
-
         val taskName = binding.taskName.text;
 
         binding.addTaskSaveChangesBtn.setOnClickListener {
@@ -140,7 +135,15 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 time = Timestamp(Time.valueOf(pickedTime + ":00"))
             }
 
-            val first = Task(0, "$taskName", priority, date, time, repeatWhen, false);
+            val first = Task(
+                0,
+                "$taskName",
+                priority,
+                date,
+                time,
+                repeatWhen,
+                false
+            );
             TaskPersistence.create(first)
             startActivity(intent)
         }

@@ -3,9 +3,7 @@ package com.example.progresspal
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.content.Intent
-import android.icu.text.Transliterator.Position
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.MenuItem
@@ -15,7 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.progresspal.databinding.ActivityAddTaskBinding
+import com.example.progresspal.Model.Task
 import com.example.progresspal.databinding.ActivityEditTaskBinding
 import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
@@ -207,7 +205,15 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 time = Timestamp(Time.valueOf(pickedTime + ":00"))
             }
             val first =
-                Task(0, "${taskName.text} \uD83D\uDE80", priority, date, time, repeatWhen, false);
+                Task(
+                    0,
+                    "${taskName.text}",
+                    priority,
+                    date,
+                    time,
+                    repeatWhen,
+                    false
+                );
             TaskPersistence.edit(first, position, originalTask)
             startActivity(intent)
         }

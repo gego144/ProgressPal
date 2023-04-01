@@ -1,6 +1,4 @@
-package com.example.progresspal;
-
-import static androidx.core.content.ContextCompat.startActivity;
+package com.example.progresspal.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.progresspal.Model.Task;
+import com.example.progresspal.R;
+import com.example.progresspal.editTask;
 
 import java.util.ArrayList;
 

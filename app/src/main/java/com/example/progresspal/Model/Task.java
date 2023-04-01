@@ -1,4 +1,4 @@
-package com.example.progresspal;
+package com.example.progresspal.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,9 +6,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.Timestamp;
-
-import java.sql.Date;
-import java.sql.Time;
 
 public class Task implements Parcelable {
     int id;

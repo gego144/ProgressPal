@@ -59,7 +59,7 @@
             android:paddingRight="43dp"
             android:paddingLeft="19dp"
             android:orientation="horizontal"
-            android:background="#F5F9FF"
+            android:background="@drawable/achived_header_bg"
             android:gravity="center">
 
             <TextView
@@ -91,10 +91,9 @@
                 android:id="@+id/archivedList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="22dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1" />
 
         </LinearLayout>

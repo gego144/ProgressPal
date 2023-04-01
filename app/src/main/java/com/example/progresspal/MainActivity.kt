@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.progresspal.Adapter.TaskAdapter
+import com.example.progresspal.Model.Task
 import com.example.progresspal.databinding.ActivityMainBinding
 import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView

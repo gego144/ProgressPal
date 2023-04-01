@@ -29,7 +29,7 @@
             android:layout_width="18dp"
             android:layout_height="16dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="22dp"/>
+            android:layout_marginTop="22dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -46,11 +46,10 @@
             android:layout_height="18dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="6dp"
-
+            android:fontFamily="@font/lato"
             android:text="Check your progress"
             android:textColor="#788190"
             android:textSize="14dp" />
-        <!--android:fontFamily="@font/lato"-->
 
         <View
             android:layout_width="309dp"

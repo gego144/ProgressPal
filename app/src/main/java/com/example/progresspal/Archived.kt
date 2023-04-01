@@ -8,13 +8,25 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.progresspal.Adapter.ArchivedAdapter
+import com.example.progresspal.Adapter.TaskAdapter
+import com.example.progresspal.Model.Archived
 import com.example.progresspal.databinding.ActivityArchivedBinding
 import com.example.progresspal.databinding.ActivityMainBinding
+import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Timestamp
+import java.sql.Date
+import java.sql.Time
 
 class Archived : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityArchivedBinding
+    private lateinit var recyclerView: RecyclerView;
+    private lateinit var adapter: ArchivedAdapter;
+    private lateinit var list: ArrayList<Archived>
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
@@ -24,6 +36,24 @@ class Archived : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         super.onCreate(savedInstanceState)
         binding = ActivityArchivedBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        recyclerView = binding.archivedList
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+//        list = TaskPersistence.get(recyclerView)
+        list = ArrayList<Archived>()
+        val arch1 = Archived("22 March, 2023", "75%")
+        val arch2 = Archived("21 March, 2023", "95%")
+        val arch3 = Archived("20 March, 2023", "80%")
+        val arch4 = Archived("19 March, 2023", "55%")
+        list.add(arch1)
+        list.add(arch2)
+        list.add(arch3)
+        list.add(arch4)
+
+        adapter = ArchivedAdapter(this, list);
+        recyclerView.adapter = adapter
 
         drawerLayout = binding.drawerLayout
         navigationView = binding.navView
