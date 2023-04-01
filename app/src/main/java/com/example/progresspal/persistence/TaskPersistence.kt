@@ -1,8 +1,5 @@
 package com.example.progresspal.persistence
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Model.Task
 import com.google.firebase.Timestamp
@@ -10,13 +7,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-object TaskPersistence : ViewModel(){
+object TaskPersistence {
     var allTasks = ArrayList<Task>()
     val database = Firebase.firestore
-    private val _myArrayList: MutableLiveData<ArrayList<Task>> = MutableLiveData()
-
-    val myArrayList: LiveData<ArrayList<Task>>
-        get() = _myArrayList
 
     val docRef = database.collection("users").document("testAndroidID").collection("currentDay").document("taskObjects")
 
@@ -72,7 +65,9 @@ object TaskPersistence : ViewModel(){
             .addOnFailureListener { println("failed") }
     }
 
-    fun edit(task: Task, position: Int, originalTask: Task){
+    @JvmStatic
+    fun edit(task: Task, position: Int, updateCompleted: Boolean){
+        if(updateCompleted){task.completed = !task.completed}
         val task = Task(
             allTasks.size,
             task.title,
