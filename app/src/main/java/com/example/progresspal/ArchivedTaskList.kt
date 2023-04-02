@@ -2,7 +2,6 @@ package com.example.progresspal
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -11,9 +10,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.progresspal.Adapter.ArchivedAdapter
 import com.example.progresspal.Adapter.ArchivedTaskListAdapter
 import com.example.progresspal.Model.ArchivedTask
 import com.example.progresspal.databinding.ActivityArchivedTaskListBinding
+import com.example.progresspal.persistence.ArchivePersistence
 import com.google.android.material.navigation.NavigationView
 
 class ArchivedTaskList : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -35,7 +36,9 @@ class ArchivedTaskList : AppCompatActivity(), NavigationView.OnNavigationItemSel
         recyclerView = binding.toDoList
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        list = ArrayList<ArchivedTask>()
 
+        val position = getIntent().getIntExtra("position", 0)
         val date = getIntent().getStringExtra("date")
         val progress = getIntent().getIntExtra("progress", 0)
         val tasks: ArrayList<ArchivedTask>? =
@@ -66,9 +69,10 @@ class ArchivedTaskList : AppCompatActivity(), NavigationView.OnNavigationItemSel
         navigationView.setNavigationItemSelectedListener(this)
 
         findViewById<Button>(R.id.archivedTaskDeleteBtn).setOnClickListener {
-
+            val intent = Intent(this, Archived::class.java)
+            ArchivePersistence.delete(position)
+            startActivity(intent)
         }
-
     }
 
     override fun onBackPressed() {

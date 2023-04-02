@@ -27,8 +27,6 @@ public class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.Archiv
     static Context context;
     static ArrayList<Archived> list;
 
-    static String[] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
     public ArchivedAdapter(Context context, ArrayList<Archived> list) {
         this.context = context;
         this.list = list;
@@ -72,13 +70,13 @@ public class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.Archiv
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Archived task = list.get(getAdapterPosition());
                     Intent intent = new Intent(context, ArchivedTaskList.class);
 
                     Archived archived = list.get(getAdapterPosition());
                     Date date = new Date(archived.getDate().getSeconds() * 1000);
                     Format dateFormat = new SimpleDateFormat("MMM dd, yyyy");
                     String dateString = dateFormat.format(date);
+                    intent.putExtra("position", getAdapterPosition());
                     intent.putExtra("date", dateString);
                     intent.putExtra("progress", archived.getProgress());
                     intent.putParcelableArrayListExtra("tasks", archived.getTasks());
