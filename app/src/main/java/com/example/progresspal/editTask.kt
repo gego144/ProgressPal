@@ -212,7 +212,7 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                     date,
                     time,
                     repeatWhen,
-                    false
+                    originalTask.completed
                 );
             TaskPersistence.edit(first, position, false)
             startActivity(intent)

@@ -7,11 +7,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-object TaskPersistence{
+object TaskPersistence {
     var allTasks = ArrayList<Task>()
     val database = Firebase.firestore
 
-    val docRef = database.collection("users").document("testAndroidID").collection("currentDay").document("taskObjects")
+    val docRef = database.collection("users").document("testAndroidID").collection("currentDay")
+        .document("taskObjects")
 
     fun get(view: RecyclerView): ArrayList<Task> {
         docRef.get()
@@ -33,7 +34,11 @@ object TaskPersistence{
                         )
                         allTasks.add(tempTask)
                     }
-
+                    var priorityValues = ArrayList<String>()
+                    priorityValues.add("High")
+                    priorityValues.add("Medium")
+                    priorityValues.add("Low")
+                    allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
                     view.adapter?.notifyDataSetChanged()
                     println("Completed get")
                 } else {
@@ -46,7 +51,7 @@ object TaskPersistence{
         return allTasks
     }
 
-    fun create(task: Task){
+    fun create(task: Task) {
         val task = Task(
             allTasks.size,
             task.title,
@@ -66,8 +71,10 @@ object TaskPersistence{
     }
 
     @JvmStatic
-    fun edit(task: Task, position: Int, updateCompleted: Boolean){
-        if(updateCompleted){task.completed = !task.completed}
+    fun edit(task: Task, position: Int, updateCompleted: Boolean) {
+        if (updateCompleted) {
+            task.completed = !task.completed
+        }
         val task = Task(
             allTasks.size,
             task.title,
@@ -86,7 +93,7 @@ object TaskPersistence{
             .addOnFailureListener { println("failed") }
     }
 
-    fun delete(position: Int){
+    fun delete(position: Int) {
 
         allTasks.removeAt(position)
         docRef
