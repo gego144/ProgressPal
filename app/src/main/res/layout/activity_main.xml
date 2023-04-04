@@ -58,7 +58,6 @@
                 android:id="@+id/streakCount"
                 android:layout_width="wrap_content"
                 android:layout_height="21dp"
-                android:fontFamily="@font/inter"
                 android:text="10" />
 
         </LinearLayout>
