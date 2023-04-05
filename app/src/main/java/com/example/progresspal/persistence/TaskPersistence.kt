@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-object TaskPersistence{
+object TaskPersistence {
     var allTasks = ArrayList<Task>()
     var uncompletedTasksNewDay = ArrayList<Task>()
     var newDay = false
@@ -69,6 +69,13 @@ object TaskPersistence{
                             allTasks.add(tempTask)
                         }
                     }
+                        allTasks.add(tempTask)
+                    }
+                    var priorityValues = ArrayList<String>()
+                    priorityValues.add("High")
+                    priorityValues.add("Medium")
+                    priorityValues.add("Low")
+                    allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
                     view.adapter?.notifyDataSetChanged()
 
                     if(newDay == true){
@@ -84,7 +91,7 @@ object TaskPersistence{
             }
     }
 
-    fun create(task: Task){
+    fun create(task: Task) {
         val task = Task(
             allTasks.size,
             task.title,
@@ -117,8 +124,10 @@ object TaskPersistence{
     }
 
     @JvmStatic
-    fun edit(task: Task, position: Int, updateCompleted: Boolean){
-        if(updateCompleted){task.completed = !task.completed}
+    fun edit(task: Task, position: Int, updateCompleted: Boolean) {
+        if (updateCompleted) {
+            task.completed = !task.completed
+        }
         val task = Task(
             allTasks.size,
             task.title,
