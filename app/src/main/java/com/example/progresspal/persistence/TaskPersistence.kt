@@ -68,18 +68,20 @@ object TaskPersistence {
                             allTasks.add(tempTask)
                         }
                     }
-                }
-                var priorityValues = ArrayList<String>()
-                priorityValues.add("High")
-                priorityValues.add("Medium")
-                priorityValues.add("Low")
-                allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
-                view.adapter?.notifyDataSetChanged()
 
-                if (newDay == true) {
-                    newDay = false
-                    dailyUpdate()
-                } else {
+                    var priorityValues = ArrayList<String>()
+                    priorityValues.add("High")
+                    priorityValues.add("Medium")
+                    priorityValues.add("Low")
+                    allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
+                    view.adapter?.notifyDataSetChanged()
+
+                    if (newDay == true) {
+                        newDay = false
+                        dailyUpdate()
+                    }
+                }
+                else {
                     println("Document doesn't exist")
                 }
             }
