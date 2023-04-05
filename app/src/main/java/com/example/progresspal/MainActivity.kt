@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,15 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Adapter.TaskAdapter
 import com.example.progresspal.Model.Task
 import com.example.progresspal.databinding.ActivityMainBinding
+import com.example.progresspal.persistence.ArchivePersistence
 import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recyclerView: RecyclerView;
     private lateinit var adapter: TaskAdapter;
-    private lateinit var list: ArrayList<Task>
+    private var list: ArrayList<Task> = ArrayList()
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
@@ -36,8 +39,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        binding.progressBar.secondaryProgress = 25
-        list = TaskPersistence.get(recyclerView)
+
+        TaskPersistence.get(recyclerView)
+        list = TaskPersistence.allTasks
+
+        TaskPersistence.getDailyPercent(binding.progressBar)
+
+        ArchivePersistence.getStreaks(findViewById<TextView>(R.id.streakCount))
 
         adapter = TaskAdapter(this, list);
         recyclerView.adapter = adapter

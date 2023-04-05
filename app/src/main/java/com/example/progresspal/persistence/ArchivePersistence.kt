@@ -1,9 +1,11 @@
 package com.example.progresspal.persistence
 
-import android.graphics.Color
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Model.Archived
 import com.example.progresspal.Model.ArchivedTask
+import com.example.progresspal.Model.Task
+import android.graphics.Color
 import com.example.progresspal.R
 import com.example.progresspal.databinding.ActivityStatsBinding
 import com.github.mikephil.charting.charts.BarChart
@@ -13,6 +15,8 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.type.DateTime
@@ -22,15 +26,14 @@ object ArchivePersistence {
     var allArchives = ArrayList<Archived>()
     val database = Firebase.firestore
 
-    val docRef = database.collection("users").document("testAndroidID").collection("archivedDays")
+    val docRef = database.collection("users").document("testAndroidIDD").collection("archivedDays")
         .document("currentDayObjects")
 
     fun get(view: RecyclerView): ArrayList<Archived> {
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document != null) {
-                    var databaseGrab =
-                        document.data?.get("archivedTasks") as ArrayList<HashMap<Any, Any>>
+                if (document.data != null) {
+                    var databaseGrab = document.data?.get("archivedTasks") as ArrayList<HashMap<Any, Any>>
                     allArchives.clear()
 
                     for (i in 0 until databaseGrab.size) {
@@ -63,6 +66,43 @@ object ArchivePersistence {
             }
         return allArchives
     }
+
+    fun create(listOfTasks: ArrayList<Task>, currentDate: Timestamp){
+        val archivedTaskList: ArrayList<ArchivedTask> = ArrayList()
+
+        for(item in listOfTasks){
+            val tempArchivedTask = ArchivedTask(
+                item.title,
+                item.completed
+            )
+            archivedTaskList.add(tempArchivedTask)
+        }
+        val archive = Archived(
+            currentDate,
+            TaskPersistence.completedPercent(listOfTasks, true),
+            archivedTaskList
+        )
+
+        docRef
+            .update("archivedTasks", FieldValue.arrayUnion(archive))
+            .addOnSuccessListener {
+                println("Completed add")
+            }
+            .addOnFailureListener {
+                // this is here because if the first add fails then it means there is no document
+                // and update only works with an existing document
+                val newObject: HashMap<String, ArrayList<Archived>> = HashMap()
+                val newUser: ArrayList<Archived> = ArrayList()
+                newUser.add(archive)
+                newObject.put("archivedTasks", newUser)
+                docRef
+                    .set(newObject, SetOptions.merge())
+                    .addOnSuccessListener {
+                        println("Completed add")
+                    }
+            }
+    }
+
 
     fun getStats(binding: ActivityStatsBinding) {
         var result = HashMap<Float, Float>()
@@ -152,5 +192,48 @@ object ArchivePersistence {
                 println("Completed delete")
             }
             .addOnFailureListener { println("failed") }
+    }
+
+    fun updateStreak(passedStreak: Boolean){
+        if(passedStreak) {
+            docRef
+                .update("streaks", FieldValue.increment(1))
+                .addOnSuccessListener {
+                    println("Completed updating streak")
+                }
+                .addOnFailureListener {
+                    println("Failed update streak")
+                }
+        }
+        else{
+            docRef
+                .update("streaks", 0)
+                .addOnSuccessListener {
+                    println("Completed updating streak")
+                }
+                .addOnFailureListener {
+                    println("Failed update streak")
+                }
+        }
+    }
+
+    fun getStreaks(textview: TextView): Int{
+        var streakCount: Int = 0
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    var databaseGrab = document.data?.get("streaks") as Long
+                    streakCount = databaseGrab.toInt()
+                    textview.text = streakCount.toString()
+                    println(streakCount)
+                    println("Completed get streaks")
+                } else {
+                    println("Document doesn't exist")
+                }
+            }
+            .addOnFailureListener { exception ->
+                println(exception)
+            }
+        return streakCount
     }
 }
