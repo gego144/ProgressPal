@@ -6,9 +6,6 @@ import com.example.progresspal.Model.Archived
 import com.example.progresspal.Model.ArchivedTask
 import com.example.progresspal.Model.Task
 import android.graphics.Color
-import androidx.recyclerview.widget.RecyclerView
-import com.example.progresspal.Model.Archived
-import com.example.progresspal.Model.ArchivedTask
 import com.example.progresspal.R
 import com.example.progresspal.databinding.ActivityStatsBinding
 import com.github.mikephil.charting.charts.BarChart
@@ -106,7 +103,7 @@ object ArchivePersistence {
             }
     }
 
-    fun delete(position: Int){
+
     fun getStats(binding: ActivityStatsBinding) {
         var result = HashMap<Float, Float>()
         result[1f] = 0f

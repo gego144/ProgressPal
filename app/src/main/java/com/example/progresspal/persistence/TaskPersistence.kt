@@ -55,33 +55,30 @@ object TaskPersistence {
                         val currentDay = (DateFormat.format("dd", currentDate) as String).toInt()
                         val taskDay = (DateFormat.format("dd", taskDate) as String).toInt()
 
-                        if(currentDate.after(taskDate) && taskDay != currentDay){
-                        currentTimeStamp = tempTask.dueDate
+                        if (currentDate.after(taskDate) && taskDay != currentDay) {
+                            currentTimeStamp = tempTask.dueDate
                             uncompletedTasksNewDay.add(tempTask)
-                            if(tempTask.completed == false){
+                            if (tempTask.completed == false) {
                                 allTasks.add(tempTask)
                                 tempTask.dueDate = Timestamp.now()
                                 uncompletedTasks.add(tempTask)
                             }
                             newDay = true
-                        }
-                        else {
+                        } else {
                             allTasks.add(tempTask)
                         }
                     }
-                        allTasks.add(tempTask)
-                    }
-                    var priorityValues = ArrayList<String>()
-                    priorityValues.add("High")
-                    priorityValues.add("Medium")
-                    priorityValues.add("Low")
-                    allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
-                    view.adapter?.notifyDataSetChanged()
+                }
+                var priorityValues = ArrayList<String>()
+                priorityValues.add("High")
+                priorityValues.add("Medium")
+                priorityValues.add("Low")
+                allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
+                view.adapter?.notifyDataSetChanged()
 
-                    if(newDay == true){
-                        newDay = false
-                        dailyUpdate()
-                    }
+                if (newDay == true) {
+                    newDay = false
+                    dailyUpdate()
                 } else {
                     println("Document doesn't exist")
                 }
@@ -89,6 +86,7 @@ object TaskPersistence {
             .addOnFailureListener { exception ->
                 println(exception)
             }
+
     }
 
     fun create(task: Task) {
