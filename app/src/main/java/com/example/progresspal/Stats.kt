@@ -15,6 +15,7 @@ import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.progresspal.databinding.ActivityStatsBinding
+import com.example.progresspal.persistence.ArchivePersistence
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -22,8 +23,10 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Timestamp
 import java.io.File
 import java.io.FileOutputStream
+import java.sql.Date
 
 class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -32,8 +35,6 @@ class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListen
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-
-    private lateinit var barArrayList: ArrayList<BarEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,32 +49,7 @@ class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListen
             binding.streakDescription.text = "This is you highest streak.Keep it up."
         }
 
-        barArrayList = ArrayList<BarEntry>()
-        val barChart: BarChart = binding.barChart
-        val xAxisLabel: ArrayList<String> = ArrayList()
-        xAxisLabel.add("")
-        xAxisLabel.add("Jan")
-        xAxisLabel.add("Feb")
-        xAxisLabel.add("Mar")
-        xAxisLabel.add("Apr")
-        xAxisLabel.add("May")
-        xAxisLabel.add("Jun")
-        xAxisLabel.add("Jul")
-        xAxisLabel.add("Aug")
-        xAxisLabel.add("Sep")
-        xAxisLabel.add("Oct")
-        xAxisLabel.add("Nov")
-        xAxisLabel.add("Dec")
-        val xAxis: XAxis = barChart.xAxis
-        xAxis.setLabelCount(xAxisLabel.size, true)
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis -> xAxisLabel[value.toInt()] }
-        getData()
-        val barDataSet: BarDataSet = BarDataSet(barArrayList, "Completed tasks per month")
-        val barData: BarData = BarData(barDataSet)
-        barChart.data = barData
-        barDataSet.setValueTextColor(Color.BLACK)
-        barDataSet.valueTextSize = 10f
-        barDataSet.color = R.color.bar
+        ArchivePersistence.getStats(binding)
 
         binding.shareBtn.setOnClickListener {
 
@@ -139,21 +115,6 @@ class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListen
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    fun getData() {
-        barArrayList.add(BarEntry(1f, 10f))
-        barArrayList.add(BarEntry(2f, 20f))
-        barArrayList.add(BarEntry(3f, 40f))
-        barArrayList.add(BarEntry(4f, 20f))
-        barArrayList.add(BarEntry(5f, 60f))
-        barArrayList.add(BarEntry(6f, 50f))
-        barArrayList.add(BarEntry(7f, 20f))
-        barArrayList.add(BarEntry(8f, 90f))
-        barArrayList.add(BarEntry(9f, 30f))
-        barArrayList.add(BarEntry(10f, 20f))
-        barArrayList.add(BarEntry(11f, 50f))
-        barArrayList.add(BarEntry(12f, 10f))
     }
 
     companion object Screenshot {
