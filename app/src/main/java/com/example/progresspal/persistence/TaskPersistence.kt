@@ -1,6 +1,9 @@
 package com.example.progresspal.persistence
 
+import android.content.Context
 import android.text.format.DateFormat
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Model.Task
 import com.google.firebase.Timestamp
@@ -8,6 +11,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.merge
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -17,13 +21,16 @@ object TaskPersistence{
     var allTasks = ArrayList<Task>()
     var uncompletedTasksNewDay = ArrayList<Task>()
     var newDay = false
+    var currentDate: Timestamp = Timestamp.now()
+    var taskDate: Timestamp = Timestamp.now()
+    var currentTimeStamp: Timestamp = Timestamp.now()
     val uncompletedTasks: ArrayList<Task> = ArrayList()
     lateinit var view : RecyclerView
     val database = Firebase.firestore
 
     val docRef = database.collection("users").document("testAndroidIDD").collection("currentDay").document("taskObjects")
 
-    fun get(view: RecyclerView){//: ArrayList<Task> {
+    fun get(view: RecyclerView){
         this.view = view
         docRef.get()
             .addOnSuccessListener { document ->
@@ -42,7 +49,14 @@ object TaskPersistence{
                             databaseGrab.get(i).get("repeat") as String?,
                             databaseGrab.get(i).get("completed") as Boolean?,
                         )
-                        if(Date(tempTask.dueDate.seconds * 1000).after(Date())){
+
+                        var taskDate = Date(tempTask.dueDate.seconds * 1000)
+                        var currentDate = Date()
+                        val currentDay = (DateFormat.format("dd", currentDate) as String).toInt()
+                        val taskDay = (DateFormat.format("dd", taskDate) as String).toInt()
+
+                        if(currentDate.after(taskDate) && taskDay != currentDay){
+                        currentTimeStamp = tempTask.dueDate
                             uncompletedTasksNewDay.add(tempTask)
                             if(tempTask.completed == false){
                                 allTasks.add(tempTask)
@@ -53,55 +67,14 @@ object TaskPersistence{
                         }
                         else {
                             allTasks.add(tempTask)
-
                         }
                     }
                     view.adapter?.notifyDataSetChanged()
 
                     if(newDay == true){
-                        updateArchive()
+                        newDay = false
+                        dailyUpdate()
                     }
-
-                    else {
-                        /*newDay = true
-                        for (item in uncompletedTasksNewDay) {
-                            if (item.completed == false) {
-                                item.dueDate = Timestamp.now()
-                                uncompletedTasks.add(item)
-                            }
-                        }
-                        allTasks = uncompletedTasks*/
-
-                        println("its false")
-                    }
-
-                    /*if(uncompletedTasksNewDay.isNotEmpty()) {
-                        println("ENTERS")
-
-                        var taskDate: Date = Date(uncompletedTasksNewDay.get(0).dueDate.seconds * 1000)
-                        var currentDate: Date = Date()
-                        val currentDay = (DateFormat.format("dd", currentDate) as String).toInt()
-                        val taskDay = (DateFormat.format("dd", taskDate) as String).toInt()
-
-                        // archivePersistence being called here so need to check if date must be changed first before updating list
-                        //if(currentDate.after(taskDate) && taskDay != currentDay){
-                        if (taskDate.after(currentDate)) {
-                            /*for (item in uncompletedTasksNewDay) {
-                                if (item.completed == false) {
-                                    item.dueDate = Timestamp.now()
-                                    uncompletedTasks.add(item)
-                                }
-                            }
-                            allTasks = uncompletedTasks
-                            view.adapter?.notifyDataSetChanged()*/
-                            updateAll(uncompletedTasks)
-                            ArchivePersistence.create(uncompletedTasksNewDay)
-                        } else {
-                            view.adapter?.notifyDataSetChanged()
-                        }
-
-                        println("Completed get")
-                    }*/
                 } else {
                     println("Document doesn't exist")
                 }
@@ -109,7 +82,6 @@ object TaskPersistence{
             .addOnFailureListener { exception ->
                 println(exception)
             }
-        //return allTasks
     }
 
     fun create(task: Task){
@@ -166,7 +138,6 @@ object TaskPersistence{
     }
 
     fun updateAll(tasks: ArrayList<Task>){
-        allTasks = tasks
         val newObject: HashMap<String, ArrayList<Task>> = HashMap()
         newObject.put("tasks", tasks)
         if(tasks.isNotEmpty()) {
@@ -174,7 +145,6 @@ object TaskPersistence{
                 .set(newObject)
                 .addOnSuccessListener {
                     println("UPDATED")
-                    //view.adapter?.notifyDataSetChanged()
                     println("Completed edit")
                 }
                 .addOnFailureListener { println("failed") }
@@ -204,24 +174,38 @@ object TaskPersistence{
             .addOnFailureListener { println("failed") }
     }
 
-    fun completedPercent(): Int{
+    fun completedPercent(listOfTasks: ArrayList<Task>, newDay: Boolean): Int{
         var completedAmount: Int = 0
-        for (task in allTasks) {
+        for (task in listOfTasks) {
             if(task.completed){
                 completedAmount += 1
             }
         }
 
         var completedPercent = 0
-        if(allTasks.size != 0){
-            val tempDouble: Double = (completedAmount.toDouble()/allTasks.size) * 100
+        if(listOfTasks.size != 0){
+            val tempDouble: Double = (completedAmount.toDouble()/listOfTasks.size) * 100
             completedPercent = tempDouble.toInt()
+            if(completedPercent >= 50 && newDay){
+                ArchivePersistence.updateStreak(true)
+            }
+            else if(newDay){
+                ArchivePersistence.updateStreak(false)
+            }
         }
         return completedPercent
     }
 
-    fun updateArchive(){
+    fun getDailyPercent(bar: ProgressBar): Int{
+        var percent: Int = 0
+        percent = completedPercent(allTasks, false)
+        bar.secondaryProgress = percent
+        return percent
+    }
+
+    fun dailyUpdate(){
         updateAll(allTasks)
-        ArchivePersistence.create(uncompletedTasksNewDay)
+        //archivePersistence being called here so need to check if date must be changed first before updating list
+        ArchivePersistence.create(uncompletedTasksNewDay, currentTimeStamp)
     }
 }

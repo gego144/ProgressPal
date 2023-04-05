@@ -1,5 +1,6 @@
 package com.example.progresspal.persistence
 
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Model.Archived
 import com.example.progresspal.Model.ArchivedTask
@@ -55,7 +56,7 @@ object ArchivePersistence {
         return allArchives
     }
 
-    fun create(listOfTasks: ArrayList<Task>){
+    fun create(listOfTasks: ArrayList<Task>, currentDate: Timestamp){
         val archivedTaskList: ArrayList<ArchivedTask> = ArrayList()
 
         for(item in listOfTasks){
@@ -66,8 +67,8 @@ object ArchivePersistence {
             archivedTaskList.add(tempArchivedTask)
         }
         val archive = Archived(
-            listOfTasks.get(0).dueDate,
-            TaskPersistence.completedPercent(),
+            currentDate,
+            TaskPersistence.completedPercent(listOfTasks, true),
             archivedTaskList
         )
 
@@ -89,8 +90,6 @@ object ArchivePersistence {
                         println("Completed add")
                     }
             }
-        //TaskPersistence.deleteAll()
-
     }
 
     fun delete(position: Int){
@@ -101,5 +100,48 @@ object ArchivePersistence {
                 println("Completed delete")
             }
             .addOnFailureListener { println("failed") }
+    }
+
+    fun updateStreak(passedStreak: Boolean){
+        if(passedStreak) {
+            docRef
+                .update("streaks", FieldValue.increment(1))
+                .addOnSuccessListener {
+                    println("Completed updating streak")
+                }
+                .addOnFailureListener {
+                    println("Failed update streak")
+                }
+        }
+        else{
+            docRef
+                .update("streaks", 0)
+                .addOnSuccessListener {
+                    println("Completed updating streak")
+                }
+                .addOnFailureListener {
+                    println("Failed update streak")
+                }
+        }
+    }
+
+    fun getStreaks(textview: TextView): Int{
+        var streakCount: Int = 0
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    var databaseGrab = document.data?.get("streaks") as Long
+                    streakCount = databaseGrab.toInt()
+                    textview.text = streakCount.toString()
+                    println(streakCount)
+                    println("Completed get streaks")
+                } else {
+                    println("Document doesn't exist")
+                }
+            }
+            .addOnFailureListener { exception ->
+                println(exception)
+            }
+        return streakCount
     }
 }
