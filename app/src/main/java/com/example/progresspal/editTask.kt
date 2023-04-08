@@ -1,7 +1,6 @@
 package com.example.progresspal
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -21,6 +20,9 @@ import com.google.firebase.Timestamp
 import java.sql.Time
 import java.util.*
 
+/**
+ * * Created by David Adane on 30/03/2023
+ */
 
 class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityEditTaskBinding
@@ -31,6 +33,8 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         super.onCreate(savedInstanceState)
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Needed to pass as parcelable because it was a custom object
         val originalTask: Task
         var task: Task
         task = getIntent().getParcelableExtra("task")!!
@@ -73,7 +77,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                print("ok")
             }
         }
 
@@ -89,6 +92,8 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         var hour = stringHour.toInt()
         var minute = stringMinute.toInt()
 
+        //Needed thus check because firebase was storing the timestamps in 12:00 hour clocks but,
+        // we wanted to use a 24 hour clock
         if (amORpm == "PM") {
             if (hour == 24) {
                 hour = 0
@@ -97,10 +102,9 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         var pickedTime = "$hour:$minute"
         timePickerOpen.text = pickedTime
-
         timePickerOpen.setOnClickListener() {
             val timePickerDialog =
-                TimePickerDialog(this, { timePicker: TimePicker, i: Int, i1: Int ->
+                TimePickerDialog(this, { timePicker: TimePicker, i: Int, i1: Int -> //Displaying the picked value in the textView
                     pickedTime = "$i:$i1"
                     timePickerOpen.text = pickedTime
                 }, hour, minute, true)
@@ -130,6 +134,8 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         val intent = Intent(this, MainActivity::class.java)
 
+
+        // need to pass in the position to know which value to delete in the array
         fun deleteTaskAlert(position: Int){
 
             val builder = AlertDialog.Builder(this)
@@ -159,6 +165,8 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         binding.editTaskSaveChangesBtn.setOnClickListener {
             var time: Timestamp
 
+            // The if statement was to check if the user edited the time because the original format
+            // would cause an error
             if (pickedTime == "$hour:$minute") {
                 time = task.reminder
             } else {

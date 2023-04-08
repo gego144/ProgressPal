@@ -22,6 +22,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.type.DateTime
 import java.sql.Date
 
+/**
+ * * Created by David Adane on 02/04/2023
+ */
+
 object ArchivePersistence {
     var allArchives = ArrayList<Archived>()
     val database = Firebase.firestore
@@ -33,6 +37,8 @@ object ArchivePersistence {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
+                    // value retrieved as hashmap because firebase provides objects in that form as
+                    // seen in other examples in the code
                     var databaseGrab = document.data?.get("archivedTasks") as ArrayList<HashMap<Any, Any>>
                     allArchives.clear()
 
@@ -44,7 +50,6 @@ object ArchivePersistence {
                         )
 
                         var tempArchivedTasks = tempTask.tasks as ArrayList<HashMap<Any, Any>>
-                        println(tempArchivedTasks.size)
 
                         for (j in 0 until tempArchivedTasks.size) {
                             val tempArchiveTask = ArchivedTask(
@@ -124,7 +129,7 @@ object ArchivePersistence {
                     var databaseGrab =
                         document.data?.get("archivedTasks") as ArrayList<HashMap<Any, Any>>
                     allArchives.clear()
-                    println(databaseGrab.size)
+
                     for (i in 0 until databaseGrab.size) {
                         var tempTask = Archived(
                             databaseGrab.get(i).get("date") as Timestamp,
@@ -225,7 +230,6 @@ object ArchivePersistence {
                     var databaseGrab = document.data?.get("streaks") as Long
                     streakCount = databaseGrab.toInt()
                     textview.text = streakCount.toString()
-                    println(streakCount)
                     println("Completed get streaks")
                 } else {
                     println("Document doesn't exist")

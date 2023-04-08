@@ -1,9 +1,7 @@
 package com.example.progresspal.persistence
 
-import android.content.Context
 import android.text.format.DateFormat
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.progresspal.Model.Task
 import com.google.firebase.Timestamp
@@ -11,20 +9,19 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.flow.merge
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+/**
+ * * Created by David Adane on 29/03/2023
+ */
 
 object TaskPersistence {
     var allTasks = ArrayList<Task>()
     var uncompletedTasksNewDay = ArrayList<Task>()
     var newDay = false
-    var currentDate: Timestamp = Timestamp.now()
-    var taskDate: Timestamp = Timestamp.now()
     var currentTimeStamp: Timestamp = Timestamp.now()
-    val uncompletedTasks: ArrayList<Task> = ArrayList()
     lateinit var view : RecyclerView
     val database = Firebase.firestore
 
@@ -35,8 +32,9 @@ object TaskPersistence {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null && document.data!!.isNotEmpty()) {
+                    // value retrieved as hashmap because firebase provides objects in that form as
+                    // seen in other examples in the code
                     var databaseGrab = document.data?.get("tasks") as ArrayList<HashMap<Any, Any>>
-
                     allTasks.clear()
 
                     for (i in 0 until databaseGrab.size) {
@@ -55,13 +53,14 @@ object TaskPersistence {
                         val currentDay = (DateFormat.format("dd", currentDate) as String).toInt()
                         val taskDay = (DateFormat.format("dd", taskDate) as String).toInt()
 
+                        // uncompletedTasksNewDay is used to store every task in that day while
+                        // allTasks only stores the uncompleted ones to be displayed on the page
                         if (currentDate.after(taskDate) && taskDay != currentDay) {
                             currentTimeStamp = tempTask.dueDate
                             uncompletedTasksNewDay.add(tempTask)
                             if (tempTask.completed == false) {
                                 allTasks.add(tempTask)
                                 tempTask.dueDate = Timestamp.now()
-                                uncompletedTasks.add(tempTask)
                             }
                             newDay = true
                         } else {
@@ -76,10 +75,12 @@ object TaskPersistence {
                     allTasks.sortBy { task -> priorityValues.indexOf(task.priority) }
                     view.adapter?.notifyDataSetChanged()
 
+                    // This dailyUpdate is here to update the task and archive page on a new day
                     if (newDay == true) {
                         newDay = false
                         dailyUpdate()
                     }
+                    println("Completed task get")
                 }
                 else {
                     println("Document doesn't exist")
@@ -153,7 +154,6 @@ object TaskPersistence {
             docRef
                 .set(newObject)
                 .addOnSuccessListener {
-                    println("UPDATED")
                     println("Completed edit")
                 }
                 .addOnFailureListener { println("failed") }
@@ -211,6 +211,7 @@ object TaskPersistence {
         bar.secondaryProgress = percent
         return percent
     }
+
 
     fun dailyUpdate(){
         updateAll(allTasks)

@@ -1,6 +1,5 @@
 package com.example.progresspal
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,10 @@ import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import java.sql.Time
-import java.sql.Date
+
+/**
+ * * Created by David Adane on 27/03/2023
+ */
 
 class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -58,23 +60,19 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 priority = priorities[p2]
                 println(priorities[p2])
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                print("ok")
             }
         }
 
         // time picker code
         val timePickerOpen = binding.timePickerOpen
         var pickedTime = ""
-        var numberTime: Int
 
         timePickerOpen.setOnClickListener() {
             val timePickerDialog = TimePickerDialog(
                 this,
-                { timePicker: TimePicker, i: Int, i1: Int -> //Showing the picked value in the textView
+                { timePicker: TimePicker, i: Int, i1: Int -> //Displaying the picked value in the textView
                     pickedTime = "$i:$i1"
-                    numberTime = i + (i1 / 100)
                     timePickerOpen.text = pickedTime
                 },
                 12,
@@ -107,6 +105,7 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         binding.addTaskSaveChangesBtn.setOnClickListener {
             var date: Timestamp = Timestamp.now()
             var time: Timestamp
+            // The if statement was to check if the user selected a time. If not it would default to noon
             if (pickedTime == "") {
                 time = Timestamp(Time.valueOf("12:00:00"))
             } else {
