@@ -4,6 +4,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -27,7 +28,10 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityAddTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -121,7 +125,7 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 repeatWhen,
                 false
             );
-            TaskPersistence.create(first)
+            TaskPersistence.create(first, id)
             startActivity(intent)
         }
     }

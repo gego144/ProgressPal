@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -32,24 +33,22 @@ class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListen
 
     private lateinit var binding: ActivityStatsBinding
 
+
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityStatsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ArchivePersistence.getStreaks(binding.streakCount)
-        var currentStreak = binding.streakCount.text.toString().toInt()
-        if (currentStreak == 0) {
-            binding.streakDescription.text = "Get at least 50% of your tasks done everyday to improve your streak!"
-        } else {
-            binding.streakDescription.text = "Nice streak. Keep it up."
-        }
+        ArchivePersistence.getStreaks(binding.streakCount, id)
+        binding.streakDescription.text = "Get at least 50% of your tasks done everyday to improve your streak!"
 
-        ArchivePersistence.getStats(binding)
+
+        ArchivePersistence.getStats(binding, id)
 
         binding.shareBtn.setOnClickListener {
 

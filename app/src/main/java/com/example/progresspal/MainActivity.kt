@@ -2,6 +2,7 @@ package com.example.progresspal
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
@@ -26,11 +27,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var adapter: TaskAdapter;
     private var list: ArrayList<Task> = ArrayList()
 
+
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -40,14 +43,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         recyclerView.layoutManager = LinearLayoutManager(this)
 
 
-        TaskPersistence.get(recyclerView)
+        TaskPersistence.get(recyclerView, id)
         list = TaskPersistence.allTasks
 
-        TaskPersistence.getDailyPercent(binding.progressBar)
+        TaskPersistence.getDailyPercent(binding.progressBar, id)
 
-        ArchivePersistence.getStreaks(findViewById<TextView>(R.id.streakCount))
+        ArchivePersistence.getStreaks(findViewById<TextView>(R.id.streakCount), id)
 
-        adapter = TaskAdapter(this, list);
+        adapter = TaskAdapter(this, list, id);
         recyclerView.adapter = adapter
 
         drawerLayout = binding.drawerLayout

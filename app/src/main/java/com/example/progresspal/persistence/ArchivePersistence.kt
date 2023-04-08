@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.type.DateTime
 import java.sql.Date
 
 /**
@@ -30,13 +29,13 @@ object ArchivePersistence {
     var allArchives = ArrayList<Archived>()
     val database = Firebase.firestore
 
-    val docRef = database.collection("users").document("testAndroidIDD").collection("archivedDays")
-        .document("currentDayObjects")
+    fun get(view: RecyclerView, id: String): ArrayList<Archived> {
+        val docRef = database.collection("users").document(id).collection("archivedDays")
+            .document("currentDayObjects")
 
-    fun get(view: RecyclerView): ArrayList<Archived> {
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document.data != null) {
+                if (document.data != null && document.data!!.isNotEmpty()) {
                     // value retrieved as hashmap because firebase provides objects in that form as
                     // seen in other examples in the code
                     var databaseGrab = document.data?.get("archivedTasks") as ArrayList<HashMap<Any, Any>>
@@ -72,7 +71,10 @@ object ArchivePersistence {
         return allArchives
     }
 
-    fun create(listOfTasks: ArrayList<Task>, currentDate: Timestamp){
+    fun create(listOfTasks: ArrayList<Task>, currentDate: Timestamp, id: String){
+        val docRef = database.collection("users").document(id).collection("archivedDays")
+            .document("currentDayObjects")
+
         val archivedTaskList: ArrayList<ArchivedTask> = ArrayList()
 
         for(item in listOfTasks){
@@ -84,7 +86,7 @@ object ArchivePersistence {
         }
         val archive = Archived(
             currentDate,
-            TaskPersistence.completedPercent(listOfTasks, true),
+            TaskPersistence.completedPercent(listOfTasks, true, id),
             archivedTaskList
         )
 
@@ -96,10 +98,11 @@ object ArchivePersistence {
             .addOnFailureListener {
                 // this is here because if the first add fails then it means there is no document
                 // and update only works with an existing document
-                val newObject: HashMap<String, ArrayList<Archived>> = HashMap()
+                val newObject: HashMap<String, Any> = HashMap()
                 val newUser: ArrayList<Archived> = ArrayList()
                 newUser.add(archive)
                 newObject.put("archivedTasks", newUser)
+                newObject.put("streaks", 0)
                 docRef
                     .set(newObject, SetOptions.merge())
                     .addOnSuccessListener {
@@ -109,7 +112,10 @@ object ArchivePersistence {
     }
 
 
-    fun getStats(binding: ActivityStatsBinding) {
+    fun getStats(binding: ActivityStatsBinding, id: String) {
+        val docRef = database.collection("users").document(id).collection("archivedDays")
+            .document("currentDayObjects")
+
         var result = HashMap<Float, Float>()
         result[1f] = 0f
         result[2f] = 0f
@@ -125,7 +131,7 @@ object ArchivePersistence {
         result[12f] = 0f
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document.data != null && document.data!!.isNotEmpty()) {
                     var databaseGrab =
                         document.data?.get("archivedTasks") as ArrayList<HashMap<Any, Any>>
                     allArchives.clear()
@@ -189,7 +195,9 @@ object ArchivePersistence {
             }
     }
 
-    fun delete(position: Int) {
+    fun delete(position: Int, id: String) {
+        val docRef = database.collection("users").document(id).collection("archivedDays")
+            .document("currentDayObjects")
         allArchives.removeAt(position)
         docRef
             .update("archivedTasks", allArchives)
@@ -199,7 +207,9 @@ object ArchivePersistence {
             .addOnFailureListener { println("failed") }
     }
 
-    fun updateStreak(passedStreak: Boolean){
+    fun updateStreak(passedStreak: Boolean, id: String){
+        val docRef = database.collection("users").document(id).collection("archivedDays")
+            .document("currentDayObjects")
         if(passedStreak) {
             docRef
                 .update("streaks", FieldValue.increment(1))
@@ -222,8 +232,10 @@ object ArchivePersistence {
         }
     }
 
-    fun getStreaks(textview: TextView): Int{
+    fun getStreaks(textview: TextView, id: String): Int{
         var streakCount: Int = 0
+        val docRef = database.collection("users").document(id).collection("archivedDays")
+            .document("currentDayObjects")
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {

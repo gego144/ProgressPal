@@ -58,7 +58,7 @@
                 android:id="@+id/streakCount"
                 android:layout_width="wrap_content"
                 android:layout_height="21dp"
-                android:text="10" />
+                android:text="0" />
 
         </LinearLayout>
 

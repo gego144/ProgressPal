@@ -3,6 +3,7 @@ package com.example.progresspal
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -36,6 +37,7 @@ class Archived : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityArchivedBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -44,7 +46,7 @@ class Archived : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        list = ArchivePersistence.get(recyclerView)
+        list = ArchivePersistence.get(recyclerView, id)
 
         adapter = ArchivedAdapter(this, list);
         recyclerView.adapter = adapter

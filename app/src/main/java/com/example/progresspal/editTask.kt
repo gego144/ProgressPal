@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.text.format.DateFormat
 import android.view.MenuItem
 import android.view.View
@@ -30,6 +31,7 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -141,7 +143,7 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             val builder = AlertDialog.Builder(this)
 
             builder.setPositiveButton(android.R.string.yes) { _, _ ->
-                TaskPersistence.delete(position)
+                TaskPersistence.delete(position, id)
                 startActivity(intent)
             }
 
@@ -182,7 +184,7 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                     repeatWhen,
                     originalTask.completed
                 );
-            TaskPersistence.edit(first, position, false)
+            TaskPersistence.edit(first, position, false, id)
             startActivity(intent)
         }
     }
