@@ -1,10 +1,10 @@
 package com.example.progresspal
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -17,7 +17,10 @@ import com.example.progresspal.persistence.TaskPersistence
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import java.sql.Time
-import java.sql.Date
+
+/**
+ * * Created by David Adane on 27/03/2023
+ */
 
 class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -25,7 +28,10 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityAddTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,23 +51,6 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
 
         navigationView.setNavigationItemSelectedListener(this)
 
-        // date picker code
-        val datePickerOpen = binding.datePickerOpen
-        var pickedDate = ""
-
-        datePickerOpen.setOnClickListener() {
-            val datePickerDialog = DatePickerDialog(
-                this, android.R.style.Widget_CalendarView,
-                { datePicker, year, month, day -> //Showing the picked value in the textView
-                    pickedDate = "$day-$month-$year"
-                    datePickerOpen.text = pickedDate
-                    var tempMonth = month + 1;
-                    pickedDate = "$year-$tempMonth-$day"
-                }, 2023, 0, 20
-            )
-            datePickerDialog.datePicker.minDate = System.currentTimeMillis()
-            datePickerDialog.show()
-        }
 
         // priorities code
         var priority = "High"
@@ -75,23 +64,19 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 priority = priorities[p2]
                 println(priorities[p2])
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                print("ok")
             }
         }
 
         // time picker code
         val timePickerOpen = binding.timePickerOpen
         var pickedTime = ""
-        var numberTime: Int
 
         timePickerOpen.setOnClickListener() {
             val timePickerDialog = TimePickerDialog(
                 this,
-                { timePicker: TimePicker, i: Int, i1: Int -> //Showing the picked value in the textView
+                { timePicker: TimePicker, i: Int, i1: Int -> //Displaying the picked value in the textView
                     pickedTime = "$i:$i1"
-                    numberTime = i + (i1 / 100)
                     timePickerOpen.text = pickedTime
                 },
                 12,
@@ -122,13 +107,9 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         val taskName = binding.taskName.text;
 
         binding.addTaskSaveChangesBtn.setOnClickListener {
-            var date: Timestamp
+            var date: Timestamp = Timestamp.now()
             var time: Timestamp
-            if (pickedDate == "") {
-                date = Timestamp(Date(System.currentTimeMillis()))
-            } else {
-                date = Timestamp(Date.valueOf(pickedDate))
-            }
+            // The if statement was to check if the user selected a time. If not it would default to noon
             if (pickedTime == "") {
                 time = Timestamp(Time.valueOf("12:00:00"))
             } else {
@@ -144,7 +125,7 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 repeatWhen,
                 false
             );
-            TaskPersistence.create(first)
+            TaskPersistence.create(first, id)
             startActivity(intent)
         }
     }

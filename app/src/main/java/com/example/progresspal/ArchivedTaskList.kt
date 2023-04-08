@@ -2,6 +2,7 @@ package com.example.progresspal
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -29,6 +30,7 @@ class ArchivedTaskList : AppCompatActivity(), NavigationView.OnNavigationItemSel
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityArchivedTaskListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -70,7 +72,7 @@ class ArchivedTaskList : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         findViewById<Button>(R.id.archivedTaskDeleteBtn).setOnClickListener {
             val intent = Intent(this, Archived::class.java)
-            ArchivePersistence.delete(position)
+            ArchivePersistence.delete(position, id)
             startActivity(intent)
         }
     }

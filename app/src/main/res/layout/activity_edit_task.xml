@@ -116,55 +116,6 @@
 
 
                     <TextView
-                        android:id="@+id/dueText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/lato"
-                        android:text="Due"
-                        android:textColor="@android:color/black" />
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginBottom="14dp"
-                        app:cardBackgroundColor="#F5F9FF"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="0dp">
-
-                        <Button
-                            android:id="@+id/editDatePickerOpen"
-                            android:layout_width="280dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="7dp"
-                            android:layout_marginBottom="0dp"
-                            android:backgroundTint="#F5F9FF"
-                            android:fontFamily="@font/lato"
-                            android:keepScreenOn="true"
-                            android:stateListAnimator="@null"
-                            android:text="Date"
-                            android:textAlignment="viewStart"
-                            android:textColor="#788190"
-                            app:elevation="0dp" />
-
-                        <ImageView
-                            android:id="@+id/dateImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="0dp"
-                            android:src="@drawable/watch" />
-
-                    </androidx.cardview.widget.CardView>
-
-
-                    <TextView
                         android:id="@+id/priorityText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

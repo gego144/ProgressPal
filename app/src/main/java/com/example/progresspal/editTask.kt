@@ -1,10 +1,10 @@
 package com.example.progresspal
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.text.format.DateFormat
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +21,9 @@ import com.google.firebase.Timestamp
 import java.sql.Time
 import java.util.*
 
+/**
+ * * Created by David Adane on 30/03/2023
+ */
 
 class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityEditTaskBinding
@@ -28,9 +31,12 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
+        val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         super.onCreate(savedInstanceState)
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Needed to pass as parcelable because it was a custom object
         val originalTask: Task
         var task: Task
         task = getIntent().getParcelableExtra("task")!!
@@ -56,37 +62,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         val taskName = binding.editTaskName
         taskName.setText(task.getTitle())
 
-
-        val datePickerOpen = binding.editDatePickerOpen
-        val date = Date(task.dueDate.seconds * 1000)
-
-
-        val stringDay = DateFormat.format("dd", date) as String
-        val stringMonth = DateFormat.format("MM", date) as String
-        val stringYear = DateFormat.format("yyyy", date) as String
-
-        var day = stringDay.toInt()
-        var month = stringMonth.toInt()
-        var year = stringYear.toInt()
-
-        var pickedDate = "$day-$month-$year"
-        datePickerOpen.text = "$day-$month-$year"
-
-
-        datePickerOpen.setOnClickListener() {
-            val datePickerDialog = DatePickerDialog(
-                this, android.R.style.Widget_CalendarView,
-                { datePicker, year, month, day -> //Showing the picked value in the textView
-                    val tempMonth = month + 1
-                    pickedDate = "$day-$tempMonth-$year"
-                    datePickerOpen.text = pickedDate
-                    pickedDate = "$year-$month-$day"
-                }, year, month - 1, day
-            )
-            datePickerDialog.datePicker.minDate = System.currentTimeMillis()
-            datePickerDialog.show()
-        }
-
         // priorities code
         var priority = "Low"
         val priorities = arrayOf("High", "Medium", "Low")
@@ -104,15 +79,12 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                print("ok")
             }
         }
 
 
         // time picker code
         val timePickerOpen = binding.editTimePickerOpen
-
-        var numberTime: Int
 
         val time = Date(task.reminder.seconds * 1000)
         val stringHour = DateFormat.format("HH", time) as String
@@ -122,6 +94,8 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         var hour = stringHour.toInt()
         var minute = stringMinute.toInt()
 
+        //Needed thus check because firebase was storing the timestamps in 12:00 hour clocks but,
+        // we wanted to use a 24 hour clock
         if (amORpm == "PM") {
             if (hour == 24) {
                 hour = 0
@@ -130,12 +104,10 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         var pickedTime = "$hour:$minute"
         timePickerOpen.text = pickedTime
-
         timePickerOpen.setOnClickListener() {
             val timePickerDialog =
-                TimePickerDialog(this, { timePicker: TimePicker, i: Int, i1: Int ->
+                TimePickerDialog(this, { timePicker: TimePicker, i: Int, i1: Int -> //Displaying the picked value in the textView
                     pickedTime = "$i:$i1"
-                    numberTime = i + (i1 / 100)
                     timePickerOpen.text = pickedTime
                 }, hour, minute, true)
 
@@ -165,12 +137,13 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         val intent = Intent(this, MainActivity::class.java)
 
 
+        // need to pass in the position to know which value to delete in the array
         fun deleteTaskAlert(position: Int){
 
             val builder = AlertDialog.Builder(this)
 
             builder.setPositiveButton(android.R.string.yes) { _, _ ->
-                TaskPersistence.delete(position)
+                TaskPersistence.delete(position, id)
                 startActivity(intent)
             }
 
@@ -192,13 +165,10 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
 
         binding.editTaskSaveChangesBtn.setOnClickListener {
-            var date: Timestamp
             var time: Timestamp
-            if (pickedDate == "$day-$month-$year") {
-                date = task.dueDate
-            } else {
-                date = Timestamp(java.sql.Date.valueOf(pickedDate))
-            }
+
+            // The if statement was to check if the user edited the time because the original format
+            // would cause an error
             if (pickedTime == "$hour:$minute") {
                 time = task.reminder
             } else {
@@ -209,15 +179,14 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                     0,
                     "${taskName.text}",
                     priority,
-                    date,
+                    task.dueDate,
                     time,
                     repeatWhen,
                     originalTask.completed
                 );
-            TaskPersistence.edit(first, position, false)
+            TaskPersistence.edit(first, position, false, id)
             startActivity(intent)
         }
-
     }
 
     override fun onBackPressed() {
