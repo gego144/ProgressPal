@@ -45,23 +45,6 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
 
         navigationView.setNavigationItemSelectedListener(this)
 
-        // date picker code
-        val datePickerOpen = binding.datePickerOpen
-        var pickedDate = ""
-
-        datePickerOpen.setOnClickListener() {
-            val datePickerDialog = DatePickerDialog(
-                this, android.R.style.Widget_CalendarView,
-                { datePicker, year, month, day -> //Showing the picked value in the textView
-                    pickedDate = "$day-$month-$year"
-                    datePickerOpen.text = pickedDate
-                    var tempMonth = month + 1;
-                    pickedDate = "$year-$tempMonth-$day"
-                }, 2023, 0, 20
-            )
-            datePickerDialog.datePicker.minDate = System.currentTimeMillis()
-            datePickerDialog.show()
-        }
 
         // priorities code
         var priority = "High"
@@ -122,13 +105,8 @@ class addTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         val taskName = binding.taskName.text;
 
         binding.addTaskSaveChangesBtn.setOnClickListener {
-            var date: Timestamp
+            var date: Timestamp = Timestamp.now()
             var time: Timestamp
-            if (pickedDate == "") {
-                date = Timestamp(Date(System.currentTimeMillis()))
-            } else {
-                date = Timestamp(Date.valueOf(pickedDate))
-            }
             if (pickedTime == "") {
                 time = Timestamp(Time.valueOf("12:00:00"))
             } else {

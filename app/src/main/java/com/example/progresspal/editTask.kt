@@ -56,37 +56,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         val taskName = binding.editTaskName
         taskName.setText(task.getTitle())
 
-
-        val datePickerOpen = binding.editDatePickerOpen
-        val date = Date(task.dueDate.seconds * 1000)
-
-
-        val stringDay = DateFormat.format("dd", date) as String
-        val stringMonth = DateFormat.format("MM", date) as String
-        val stringYear = DateFormat.format("yyyy", date) as String
-
-        var day = stringDay.toInt()
-        var month = stringMonth.toInt()
-        var year = stringYear.toInt()
-
-        var pickedDate = "$day-$month-$year"
-        datePickerOpen.text = "$day-$month-$year"
-
-
-        datePickerOpen.setOnClickListener() {
-            val datePickerDialog = DatePickerDialog(
-                this, android.R.style.Widget_CalendarView,
-                { datePicker, year, month, day -> //Showing the picked value in the textView
-                    val tempMonth = month + 1
-                    pickedDate = "$day-$tempMonth-$year"
-                    datePickerOpen.text = pickedDate
-                    pickedDate = "$year-$month-$day"
-                }, year, month - 1, day
-            )
-            datePickerDialog.datePicker.minDate = System.currentTimeMillis()
-            datePickerDialog.show()
-        }
-
         // priorities code
         var priority = "Low"
         val priorities = arrayOf("High", "Medium", "Low")
@@ -112,8 +81,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         // time picker code
         val timePickerOpen = binding.editTimePickerOpen
 
-        var numberTime: Int
-
         val time = Date(task.reminder.seconds * 1000)
         val stringHour = DateFormat.format("HH", time) as String
         val stringMinute = DateFormat.format("mm", time) as String
@@ -135,7 +102,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             val timePickerDialog =
                 TimePickerDialog(this, { timePicker: TimePicker, i: Int, i1: Int ->
                     pickedTime = "$i:$i1"
-                    numberTime = i + (i1 / 100)
                     timePickerOpen.text = pickedTime
                 }, hour, minute, true)
 
@@ -164,7 +130,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         val intent = Intent(this, MainActivity::class.java)
 
-
         fun deleteTaskAlert(position: Int){
 
             val builder = AlertDialog.Builder(this)
@@ -192,13 +157,8 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
 
         binding.editTaskSaveChangesBtn.setOnClickListener {
-            var date: Timestamp
             var time: Timestamp
-            if (pickedDate == "$day-$month-$year") {
-                date = task.dueDate
-            } else {
-                date = Timestamp(java.sql.Date.valueOf(pickedDate))
-            }
+
             if (pickedTime == "$hour:$minute") {
                 time = task.reminder
             } else {
@@ -209,7 +169,7 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                     0,
                     "${taskName.text}",
                     priority,
-                    date,
+                    task.dueDate,
                     time,
                     repeatWhen,
                     originalTask.completed
@@ -217,7 +177,6 @@ class editTask : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             TaskPersistence.edit(first, position, false)
             startActivity(intent)
         }
-
     }
 
     override fun onBackPressed() {

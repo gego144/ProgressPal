@@ -40,13 +40,13 @@ class Stats : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListen
         super.onCreate(savedInstanceState)
         binding = ActivityStatsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val maxStreak = 15
-        val currentStreak = 14
-        binding.streakCount.text = currentStreak.toString()
-        if (currentStreak < maxStreak) {
-            binding.streakDescription.text = "Your highest streak is $maxStreak. Let's beat that."
+
+        ArchivePersistence.getStreaks(binding.streakCount)
+        var currentStreak = binding.streakCount.text.toString().toInt()
+        if (currentStreak == 0) {
+            binding.streakDescription.text = "Get at least 50% of your tasks done everyday to improve your streak!"
         } else {
-            binding.streakDescription.text = "This is you highest streak.Keep it up."
+            binding.streakDescription.text = "Nice streak. Keep it up."
         }
 
         ArchivePersistence.getStats(binding)
