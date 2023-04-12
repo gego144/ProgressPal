@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/menu_background"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextAppearance="@style/navItem"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/nav_menu" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menuBtn"
+            android:layout_width="18dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="22dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="52dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Edit task"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
+
+            android:fontFamily="@font/lato"
+            android:text="Edit task description"
+            android:textColor="#788190"
+            android:textSize="14dp" />
+        <!--android:fontFamily="@font/lato"-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/titleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/lato"
+                        android:text="Title"
+                        android:textColor="@android:color/black" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginBottom="14dp"
+                        app:cardBackgroundColor="#F5F9FF"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/taskImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/title"/>
+
+                        <EditText
+                            android:id="@+id/editTaskName"
+                            android:layout_width="288dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="35dp"
+                            android:background="#F5F9FF"
+                            android:fontFamily="@font/lato"
+                            android:hint="Task name"
+                            android:textColor="@android:color/black"
+                            android:textSize="17dp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <TextView
+                        android:id="@+id/priorityText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/lato"
+                        android:text="Priority"
+                        android:textColor="@android:color/black" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginBottom="14dp"
+                        app:cardBackgroundColor="#F5F9FF"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/priority" />
+
+                        <Spinner
+                            android:id="@+id/editPrioritySpinner"
+                            android:layout_width="293dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="9dp" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <TextView
+                        android:id="@+id/reminderText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/lato"
+                        android:text="Reminder"
+                        android:textColor="@android:color/black" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginBottom="14dp"
+                        app:cardBackgroundColor="#F5F9FF"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp">
+
+                        <Button
+                            android:id="@+id/editTimePickerOpen"
+                            android:layout_width="280dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="0dp"
+                            android:fontFamily="@font/lato"
+                            android:stateListAnimator="@null"
+                            android:text="12:00"
+                            android:textAlignment="viewStart"
+                            android:textColor="@android:color/black"
+                            app:backgroundTint="#F5F9FF" />
+
+                        <ImageView
+                            android:id="@+id/timeImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/watch" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <TextView
+                        android:id="@+id/repeatText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/lato"
+                        android:text="Repeat"
+                        android:textColor="@android:color/black" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginBottom="14dp"
+                        app:cardBackgroundColor="#F5F9FF"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/repeatImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/repeat" />
+
+                        <Spinner
+                            android:id="@+id/editRepeatSpinner"
+                            android:layout_width="293dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="9dp"
+                            android:background="#F5F9FF" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:id="@+id/editTaskDeleteBtn"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="315dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/lato"
+                android:text="Delete"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="14dp"
+                app:backgroundTint="@android:color/transparent" />
+
+            <Button
+                android:id="@+id/editTaskSaveChangesBtn"
+                android:layout_width="315dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/round_button"
+                android:fontFamily="@font/lato"
+                android:text="Save changes"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
